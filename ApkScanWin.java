@@ -3,10 +3,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
@@ -98,23 +96,35 @@ public class ApkScanWin {
                 sb.append(value).append(" ");
             }
         }
-        System.out.println(sb.toString());
-        textArea1.setText("Designed by Bin4xin https://github.com/bin4xin/\n" +
-                "Source from legend https://www.legendsec.org/\nEnjoy ;)\n" +
-                "已知壳\n" + sb.toString());
+        StringBuilder ab = new StringBuilder();
+        Map<String, String> setRefenrenceMap = new HashMap<>();
+        setRefenrenceMap.put("Designed by Bin4xin", "https://github.com/bin4xin/");
+        setRefenrenceMap.put("Source from legend", "https://www.legendsec.org/");
+        for (Map.Entry<String, String> entry : setRefenrenceMap.entrySet()) {
+            String key = entry.getKey();
+            String value = entry.getValue();
+            if (!seenValues.contains(value)) {
+                seenValues.add(value);
+                ab.append(key).append(": ").append(value).append("\n");
+            }
+        }
+        textArea1.setText(ab + "Enjoy ;)\n" + "已知壳\n" + sb.toString());
         // Set content pane and default close operation
         this.jFrame.setContentPane(this.panel1);
         this.jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-        // Set initial size and make the frame resizable
-        this.jFrame.setSize(1440, 1080);
-        this.jFrame.setResizable(true);
 
         // Center the frame on the screen
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         int x = (int) (toolkit.getScreenSize().getWidth() - this.jFrame.getWidth()) / 2;
         int y = (int) (toolkit.getScreenSize().getHeight() - this.jFrame.getHeight()) / 2;
-        this.jFrame.setLocation(x, y);
+
+        this.jFrame.setLocation(x/2, y/2);
+
+        this.jFrame.setSize(x, y);
+
+        // Set initial size and make the frame resizable
+
+        this.jFrame.setResizable(true);
         this.jFrame.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
